@@ -50,7 +50,7 @@ function general (): void {
 /**
  * Valida los datos introducidos por un usuario para iniciar sesión;
  * @returns {void}
- */  
+ */    
 function checkUser (): void {
     let error = (document.getElementById("error") as HTMLInputElement);
     let userPresent: boolean;
