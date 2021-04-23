@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "module": "es6",
+        "sourceMap": true,
+        "watch": true,
+        "outDir": "lib",
+        "moduleResolution": "node"
+    },
+    "exclude": [
+        "node_modules"
+    ]
+  }
+  
+  
+  
+  

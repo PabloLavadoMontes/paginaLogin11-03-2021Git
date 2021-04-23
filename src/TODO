@@ -1,0 +1,30 @@
+
+Comprobar que el usuario no esté registrado, la contraseña coincida y el correo sea válido
+
+
+--Crear tests para las funciones de validación
+--Crear funciones validar:
+Edad
+Email
+Nombre de usuario existente
+Contraseña se repite correctamente
+--Instalar sweetalert
+--Crear expresión regular para validar el email
+--Crear una nueva página para que los usuarios se registren que incluya:
+✔  <input>Usuario 
+✔  <input>Contraseña
+✔  <input>Repetir contraseña
+<input>Validar la contraseña
+<input>Correo electrónico, validar correo electrónico
+✔  <input>Edad
+Botón guardar nuevo usuario
+If usuario existe alerta(usuario ya existe, pruebe con otro nombre)
+Else alert(el usuario ha sido dado de alta correctamente)
+If (usuario guardado) se recarga la página y aparece la página de inicio de sesión
+✔  Añadir a la clase users los atributos: correo electrónico y edad
+✔  Crear página bienvenida para usuarios logueados
+✔  Crear error "Vuelve a introducir la contraseña", para accesos incorrectos
+✔  Crear usuarios falsos con sus respectivas contraseñas
+✔  Comprobar datos usuarios y contraseñas
+✔  Hacer que al clicar el botón se llame a la función "checkUser"
+✔  Obtener el valor usuario y contraseña introducidos por el usuario
