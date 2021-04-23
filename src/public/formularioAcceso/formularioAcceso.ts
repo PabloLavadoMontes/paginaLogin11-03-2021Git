@@ -13,9 +13,9 @@ class User {
 }
 const users: User[] = [new User("PepeGotera", "Albañil34", "pepitoelalbañilmasbonito@hotmail.com", 32), new User("Súperman", "12345", "claroqueclark@superman.com", 28), new User("Fer.Quaglietta", "Scoiattolo", "fer.quaglietta@gmai.com", 39), new User("Brian Johnson", "ACDC", "jhonsonandjohnson@yahoo.com", 63), new User("Pablito", "Clavó un clavito", "mrpablitoesdelomejorcito@pabloski.es)", 21)];
 
-
 // DOM
 window.addEventListener("load", general);
+
 /**
  * Realiza una llamada a los eventos necesarios para que las funciones se ejecuten, tras haber cargado el documento;
  * @returns {void}
@@ -57,16 +57,16 @@ function checkUser (): void {
     let nombreCapturado: string = (document.getElementById("username") as HTMLInputElement).value;
     let contraseñaCapturada: string = (document.getElementById("password") as HTMLInputElement).value;
     for (let i: number = 0; i < localStorage.length; i++) {
-        console.log(JSON.parse(localStorage.getItem(localStorage.key(i))).username);
-        /* if (nombreCapturado === JSON.parse(localStorage.getItem(localStorage.key(i))).username && contraseñaCapturada === JSON.parse(localStorage.getItem(localStorage.key(i))).password) {
+        if (nombreCapturado === JSON.parse(localStorage.getItem(localStorage.key(i))).username && contraseñaCapturada === JSON.parse(localStorage.getItem(localStorage.key(i))).password) {
             userPresent = true;
+            swal("", `Enhorabuena ${nombreCapturado}, has conseguido iniciar sesión`, "success");
             break
         } else {
             userPresent = false
+            swal("", "Su nombre de usuario o contraseña son incorrectos :(", "error")
         }
-    } */
-    console.log(userPresent)
-    userPresent ? window.open("../../private/sesionIniciada/sesionIniciada.html", "_self") : error.style.color = "red", error.innerHTML = "Su nombre de usuario o contraseña son incorrectos :("; 
+    }
+    // userPresent ? window.open("../../private/sesionIniciada/sesionIniciada.html", "_self") : swal("", "Su nombre de usuario o contraseña son incorrectos :(", "error");
 }
 
 
