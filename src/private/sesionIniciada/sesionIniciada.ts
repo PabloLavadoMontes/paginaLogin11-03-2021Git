@@ -1,14 +1,23 @@
+export {checksSessionStorage, blockPage}
 /**
  * Comprueba si el usuario que intenta iniciar sesión en la página de "sesión Iniciada" está guardado en el "session storage"
- * @returns {void}
+ * @returns {boolean}
 */
-const checksSessionStoragee = (): boolean => sessionStorage.getItem("user") ? true : false;
+const checksSessionStorage = (): boolean => (sessionStorage.length > 1) ? true : false;
 
+/**
+ * Redirige a la página usuarioNoRegsitrado.html si no hay ningún usuario registrado en el SessionStorage;
+ * @param {boolean} checksSessionStorage 
+ * @returns {void}
+ */
+ const blockPage = (checksSessionStorage: boolean): void => {checksSessionStorage ? true : window.open("../../public/usuarioNoRegistrado/usuarioNoRegistrado.html", "_self"); } 
 
-blockPage(checksSessionStoragee());
+// Llamada a las funciones:
+blockPage(checksSessionStorage());
+
 
 /* 
-function checksSessionStoragee (): boolean {
+function checksSessionStorage (): boolean {
     console.log(sessionStorage.getItem("user"));
     return sessionStorage.getItem("user") ? true : false;
     if (sessionStorage.getItem("user")) {
@@ -17,11 +26,5 @@ function checksSessionStoragee (): boolean {
         window.open("../../public/usuarioNoRegistrado/usuarioNoRegistrado.html", "_self");
     }
 } */
-/**
- * 
- * @param {boolean} checksSessionStoragee 
- * @returns {void}
- */
-function blockPage (checksSessionStoragee: boolean): void {
-    checksSessionStoragee ? true : window.open("../../public/usuarioNoRegistrado/usuarioNoRegistrado.html", "_self");
-}
+
+

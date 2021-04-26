@@ -12,21 +12,24 @@ class Userr {
 }
 const userss: Userr[] = [new Userr("PepeGotera", "Albañil34", "pepitoelalbañilmasbonito@hotmail.com", 32), new Userr("Súperman", "12345", "claroqueclark@superman.com", 28), new Userr("Fer.Quaglietta", "Scoiattolo", "fer.quaglietta@gmai.com", 39), new Userr("Brian Johnson", "ACDC", "jhonsonandjohnson@yahoo.com", 63), new Userr("Pablito", "Clavó un clavito", "mrpablitoesdelomejorcito@pabloski.es)", 21)];
 
+// DOM
 document.getElementById("button").addEventListener("click", principal);
 
-
-function principal () {
-
+/**
+ * Ejecuta las comprobaciones para registrar al usuario
+ */
+function principal (): void {
     //  Pintar registro correcto en el DOM:    let error = (document.getElementById("error") as HTMLInputElement);
-    if (!userExists(userss)) {
+    if (!userExists()) {
         validateInputs();
     } 
-    if (userExists(userss) === false && validateInputs()) {
+    if (userExists() === false && validateInputs()) {
         validatePassword();
     }
-    if (userExists(userss) === false && validateInputs() && validatePassword()) {
+    if (userExists() === false && validateInputs() && validatePassword()) {
         addUser(userss);
         addUserToLS();
+        addUserToSS();
         //  Pintar registro correcto en el DOM:
         /*         error.style.color = "green";
         error.innerHTML = "Usuario registrado correctamente 😜"; */
@@ -39,19 +42,19 @@ function principal () {
  * Comprueba si el nombre de usuario introducido está ya registrado o no.
  * @returns {boolean}
  */
-function userExists (userss: Userr[]): boolean {
+function userExists (): boolean {
 //  Pintar error en el DOM:
     /*  let error = (document.getElementById("error") as HTMLInputElement);
     error.style.color = "red"; */
     let username: string = (document.getElementById("username") as HTMLInputElement).value;
-    for (let i: number = 0; i < userss.length; i++) {
-        if (userss[i].username === username) {
+    for (let i: number = 0; i < localStorage.length; i++) {
+        if (JSON.parse(localStorage.getItem(localStorage.key(i))).username === username) {
             // Pintar el error en el DOM:   error.innerHTML = "Este usuario ya existe, por favor, introduzca un nombre de usuario diferente";
             swal("", "Este usuario ya existe, por favor, introduzca un nombre de usuario DIFERENTE", "error");
-            return true
+            return true;
         }
     }
-    return false
+    return false;
 }  
 
 /**
@@ -79,9 +82,6 @@ function validateInputs(): boolean {
     }
     return true;
 }
-
-
-
 
 
 /**
@@ -114,8 +114,6 @@ function addUser (userss: Userr[]): any {
     return userss[userss.length-1];
 }
 
-
-
 /**
  * Guarda el nuevo usuario en el Local Storage;
  * @returns {void}
@@ -124,3 +122,10 @@ function addUserToLS (): void {
     localStorage.setItem(addUser(userss).username, JSON.stringify(addUser(userss)));
 }
 
+/**
+ * Guarda el nuevo usuario en el Session Storage;
+ * @returns {void}
+ */
+ function addUserToSS (): void {
+    sessionStorage.setItem(addUser(userss).username, JSON.stringify(addUser(userss)));
+}

@@ -1,5 +1,7 @@
-// Antes de cargar el DOM
-checksSessionStorage();
+import {checksSessionStorage, blockPage} from "../sesionIniciada/sesionIniciada.js";
+
+// Antes de cargar el DOM:
+blockPage(checksSessionStorage())
 
 // DOM
 window.addEventListener("load", principaal);
@@ -13,15 +15,6 @@ function principaal (): void {
     document.getElementById("cerrarSesion").addEventListener("click", logOut);
 }
 
-/**
- * Comprueba si el usuario que intenta iniciar sesión en la página de "usuarios registrados" está guardado en el "session storage"
- */
- function checksSessionStorage () {
-    if (sessionStorage.getItem("user")) {
-    } else {
-        window.open("../../public/usuarioNoRegistrado/usuarioNoRegistrado.html", "_self");
-    }
-}
 
 /**
  * Muestra en una tabla del html los usuarios existentes en el localStorage;

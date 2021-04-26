@@ -53,20 +53,17 @@ function general (): void {
  */    
 function checkUser (): void {
     let error = (document.getElementById("error") as HTMLInputElement);
-    let userPresent: boolean;
     let nombreCapturado: string = (document.getElementById("username") as HTMLInputElement).value;
     let contraseñaCapturada: string = (document.getElementById("password") as HTMLInputElement).value;
-    for (let i: number = 0; i < localStorage.length; i++) {
-        if (nombreCapturado === JSON.parse(localStorage.getItem(localStorage.key(i))).username && contraseñaCapturada === JSON.parse(localStorage.getItem(localStorage.key(i))).password) {
-            userPresent = true;
+    for (let i: number = 0; i < sessionStorage.length; i++) {
+        if (nombreCapturado === JSON.parse(sessionStorage.getItem(sessionStorage.key(i))).username && contraseñaCapturada === JSON.parse(sessionStorage.getItem(sessionStorage.key(i))).password) {
             swal("", `Enhorabuena ${nombreCapturado}, has conseguido iniciar sesión`, "success");
-            break
+            setTimeout(() => { window.open("../../private/sesionIniciada/sesionIniciada.html", "_self") }, 1200);
+            break;
         } else {
-            userPresent = false
-            swal("", "Su nombre de usuario o contraseña son incorrectos :(", "error")
+            swal("", "Su nombre de usuario o contraseña son incorrectos :(", "error");
         }
     }
-    // userPresent ? window.open("../../private/sesionIniciada/sesionIniciada.html", "_self") : swal("", "Su nombre de usuario o contraseña son incorrectos :(", "error");
 }
 
 
