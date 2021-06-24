@@ -40,8 +40,8 @@ function general (): void {
     (event.target as HTMLInputElement).placeholder = (event.target as HTMLInputElement).name;
     }, true);
 
-    // TODO: Aquí es donde tengo que cvargar los datos del servidor en el LS con el cliente cuando ha cargado la página
-
+    // TODO: Aquí es donde tengo que cargar los datos del servidor en el LS con el cliente cuando ha cargado la página
+    // TODO: Recuerda cambiar os nobres de las variables, actualemnte NO COINCIDEN con las del servidor
 /*     document.getElementById("username").addEventListener("click", activateUsernameLabel);
     document.getElementById("password").addEventListener("click", activatePasswordLabel); */
 }
