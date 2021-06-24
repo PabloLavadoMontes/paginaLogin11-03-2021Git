@@ -55,8 +55,8 @@ function checkUser (): void {
     let error = (document.getElementById("error") as HTMLInputElement);
     let nombreCapturado: string = (document.getElementById("username") as HTMLInputElement).value;
     let contraseñaCapturada: string = (document.getElementById("password") as HTMLInputElement).value;
-    for (let i: number = 0; i < sessionStorage.length; i++) {
-        if (nombreCapturado === JSON.parse(sessionStorage.getItem(sessionStorage.key(i))).username && contraseñaCapturada === JSON.parse(sessionStorage.getItem(sessionStorage.key(i))).password) {
+    for (let i: number = 0; i < localStorage.length; i++) {
+        if (nombreCapturado === JSON.parse(localStorage.getItem(localStorage.key(i))).username && contraseñaCapturada === JSON.parse(localStorage.getItem(localStorage.key(i))).password) {
             swal("", `Enhorabuena ${nombreCapturado}, has conseguido iniciar sesión`, "success");
             setTimeout(() => { window.open("../../private/sesionIniciada/sesionIniciada.html", "_self") }, 1200);
             break;
