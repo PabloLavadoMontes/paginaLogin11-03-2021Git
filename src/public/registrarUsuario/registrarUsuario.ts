@@ -1,10 +1,10 @@
 class Userr {
-    username: string;
+    name: string;
     password: string;
     email: string;
     age: number;
-    constructor (username: string, password: string, email: string, age: number) {
-        this.username = username;
+    constructor (name: string, password: string, email: string, age: number) {
+        this.name = name;
         this.password = password;
         this.email = email;
         this.age = age;
@@ -28,8 +28,7 @@ function principal (): void {
     }
     if (userExists() === false && validateInputs() && validatePassword()) {
         addUser(userss);
-        addUserToLS();
-        addUserToSS();
+        registerUsers(userss[userss.length-1]);
         //  Pintar registro correcto en el DOM:
         /*         error.style.color = "green";
         error.innerHTML = "Usuario registrado correctamente 😜"; */
@@ -48,7 +47,7 @@ function userExists (): boolean {
     error.style.color = "red"; */
     let username: string = (document.getElementById("username") as HTMLInputElement).value;
     for (let i: number = 0; i < localStorage.length; i++) {
-        if (JSON.parse(localStorage.getItem(localStorage.key(i))).username === username) {
+        if (localStorage.getItem(localStorage.key(i)) === username) {
             // Pintar el error en el DOM:   error.innerHTML = "Este usuario ya existe, por favor, introduzca un nombre de usuario diferente";
             swal("", "Este usuario ya existe, por favor, introduzca un nombre de usuario DIFERENTE", "error");
             return true;
@@ -115,17 +114,22 @@ function addUser (userss: Userr[]): any {
 }
 
 /**
- * Guarda el nuevo usuario en el Local Storage;
+ * Guarda al nuevo usuario en la BD, el localStorage y el sessionStorage
+ * @param {any} user 
  * @returns {void}
  */
-function addUserToLS (): void {
-    localStorage.setItem(addUser(userss).username, JSON.stringify(addUser(userss)));
-}
-
-/**
- * Guarda el nuevo usuario en el Session Storage;
- * @returns {void}
- */
- function addUserToSS (): void {
-    sessionStorage.setItem(addUser(userss).username, JSON.stringify(addUser(userss)));
+function registerUsers (user: any): void {
+    axios.post('http://localhost:2800/usuarios', user)
+    .then((respuesta)=> {
+        console.log(respuesta.data);
+        localStorage.setItem(user.name, JSON.stringify(user));
+        sessionStorage.setItem(user.name, JSON.stringify(user));
+    })
+    .catch((error)=> {
+        // handle error
+        console.log("Haciendo un POST existe el siguiente error: " + error);
+    })
+    .then(()=> {
+        // always executed
+    });
 }
