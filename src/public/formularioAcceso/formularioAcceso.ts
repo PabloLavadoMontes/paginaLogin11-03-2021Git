@@ -39,7 +39,7 @@ function general (): void {
     }  
     (event.target as HTMLInputElement).placeholder = (event.target as HTMLInputElement).name;
     }, true);
-
+    getUsers()
     // TODO: Aquí es donde tengo que cargar los datos del servidor en el LS con el cliente cuando ha cargado la página
     // TODO: Recuerda cambiar os nobres de las variables, actualemnte NO COINCIDEN con las del servidor
 /*     document.getElementById("username").addEventListener("click", activateUsernameLabel);
@@ -58,7 +58,7 @@ function checkUser (): void {
     let nombreCapturado: string = (document.getElementById("username") as HTMLInputElement).value;
     let contraseñaCapturada: string = (document.getElementById("password") as HTMLInputElement).value;
     for (let i: number = 0; i < localStorage.length; i++) {
-        if (nombreCapturado === JSON.parse(localStorage.getItem(localStorage.key(i))).username && contraseñaCapturada === JSON.parse(localStorage.getItem(localStorage.key(i))).password) {
+        if (nombreCapturado === JSON.parse(localStorage.getItem(localStorage.key(i))).name && contraseñaCapturada === JSON.parse(localStorage.getItem(localStorage.key(i))).password) {
             swal("", `Enhorabuena ${nombreCapturado}, has conseguido iniciar sesión`, "success");
             setTimeout(() => { window.open("../../private/sesionIniciada/sesionIniciada.html", "_self") }, 1200);
             break;
@@ -95,4 +95,19 @@ function activatePasswordLabel (): void {
     }
 }
 
-
+function getUsers (): void {
+    axios.get('http://localhost:2800/usuarios')
+    .then((respuesta)=> {
+        for (let i: number = 0; i < respuesta.data.length; i++) {
+            localStorage.setItem(respuesta.data[i].name, JSON.stringify(respuesta.data[i]))
+        }
+        console.log(respuesta.data);
+    })
+    .catch((error)=> {
+        // handle error
+        console.log("Haciendo un GET existe el siguiente error: " + error);
+    })
+    .then(()=> {
+        // always executed
+    });
+}
