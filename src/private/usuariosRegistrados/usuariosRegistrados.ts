@@ -23,7 +23,7 @@ function principaal (): void {
 function showUsersInTable (): void {
     let tablaRef: HTMLElement = (document.getElementById("tablaUsuarios") as HTMLElement); 
     for(let i: number = 0 ; i < localStorage.length; i++){
-        tablaRef.innerHTML += `<tbody><tr><td>${JSON.parse(localStorage.getItem(localStorage.key(i))).username}</td><td>${JSON.parse(localStorage.getItem(localStorage.key(i))).email}</td><td>${JSON.parse(localStorage.getItem(localStorage.key(i))).age}</td><td><button style="width: 230px; height: 28px" id="${JSON.parse(localStorage.getItem(localStorage.key(i))).username}">Editar a ${JSON.parse(localStorage.getItem(localStorage.key(i))).username}</td></tr></tbody>`;
+        tablaRef.innerHTML += `<tbody><tr><td>${JSON.parse(localStorage.getItem(localStorage.key(i))).name}</td><td>${JSON.parse(localStorage.getItem(localStorage.key(i))).email}</td><td>${JSON.parse(localStorage.getItem(localStorage.key(i))).age}</td><td><button onclick="location.href='http://127.0.0.1:5500/src/private/editarTabla/editarTabla.html'" style="width: 230px; height: 28px" id="${JSON.parse(localStorage.getItem(localStorage.key(i))).name}">Editar a ${JSON.parse(localStorage.getItem(localStorage.key(i))).name}</td></tr></tbody>`;
     }
 }
 
@@ -37,6 +37,8 @@ function logOut (): void {
     }
     window.open("../../public/formularioAcceso/formularioAcceso.html", "_self")
 }
+
+
 
 
 

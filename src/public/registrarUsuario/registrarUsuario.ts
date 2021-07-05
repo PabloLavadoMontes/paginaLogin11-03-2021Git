@@ -1,10 +1,12 @@
+export {userExists, validateInputs, validatePassword}
+
 class Userr {
-    username: string;
+    name: string;
     password: string;
     email: string;
     age: number;
-    constructor (username: string, password: string, email: string, age: number) {
-        this.username = username;
+    constructor (name: string, password: string, email: string, age: number) {
+        this.name = name;
         this.password = password;
         this.email = email;
         this.age = age;
@@ -48,7 +50,7 @@ function userExists (): boolean {
     error.style.color = "red"; */
     let username: string = (document.getElementById("username") as HTMLInputElement).value;
     for (let i: number = 0; i < localStorage.length; i++) {
-        if (JSON.parse(localStorage.getItem(localStorage.key(i))).username === username) {
+        if (JSON.parse(localStorage.getItem(localStorage.key(i))).name === username) {
             // Pintar el error en el DOM:   error.innerHTML = "Este usuario ya existe, por favor, introduzca un nombre de usuario diferente";
             swal("", "Este usuario ya existe, por favor, introduzca un nombre de usuario DIFERENTE", "error");
             return true;
@@ -119,7 +121,7 @@ function addUser (userss: Userr[]): any {
  * @returns {void}
  */
 function addUserToLS (): void {
-    localStorage.setItem(addUser(userss).username, JSON.stringify(addUser(userss)));
+    localStorage.setItem(userss[userss.length-1].name, JSON.stringify(addUser(userss)))
 }
 
 /**
@@ -127,5 +129,5 @@ function addUserToLS (): void {
  * @returns {void}
  */
  function addUserToSS (): void {
-    sessionStorage.setItem(addUser(userss).username, JSON.stringify(addUser(userss)));
+    sessionStorage.setItem(userss[userss.length-1].name, JSON.stringify(addUser(userss)));
 }
