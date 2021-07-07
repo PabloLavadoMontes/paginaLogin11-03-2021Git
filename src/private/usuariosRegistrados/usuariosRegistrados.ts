@@ -1,7 +1,8 @@
-import {checksSessionStorage, blockPage} from "../sesionIniciada/sesionIniciada.js";
+import {checksLocalStorage, blockPage} from "../sesionIniciada/sesionIniciada.js";
+export {getName}
 
 // Antes de cargar el DOM:
-blockPage(checksSessionStorage())
+blockPage(checksLocalStorage())
 
 // DOM
 window.addEventListener("load", principaal);
@@ -12,9 +13,22 @@ window.addEventListener("load", principaal);
  */
 function principaal (): void {
     showUsersInTable();
+    for (let i: number = 0; i < document.getElementsByTagName("button").length - 1; i++) {
+        document.getElementsByTagName("button")[i].addEventListener("click", getName)
+    }
     document.getElementById("cerrarSesion").addEventListener("click", logOut);
 }
 
+/**
+ * Devuelve el id de un elemento HTML
+ * @returns {string}
+ */
+function getName (): string {
+    sessionStorage.clear();
+    sessionStorage.setItem(this.id, this.id)
+    window.open("http://127.0.0.1:5500/src/private/editarTabla/editarTabla.html", "_self")
+    return this.id;
+}
 
 /**
  * Muestra en una tabla del html los usuarios existentes en el localStorage;
@@ -23,20 +37,22 @@ function principaal (): void {
 function showUsersInTable (): void {
     let tablaRef: HTMLElement = (document.getElementById("tablaUsuarios") as HTMLElement); 
     for(let i: number = 0 ; i < localStorage.length; i++){
-        tablaRef.innerHTML += `<tbody><tr><td>${JSON.parse(localStorage.getItem(localStorage.key(i))).username}</td><td>${JSON.parse(localStorage.getItem(localStorage.key(i))).email}</td><td>${JSON.parse(localStorage.getItem(localStorage.key(i))).age}</td><td><button style="width: 230px; height: 28px" id="${JSON.parse(localStorage.getItem(localStorage.key(i))).username}">Editar a ${JSON.parse(localStorage.getItem(localStorage.key(i))).username}</td></tr></tbody>`;
+        tablaRef.innerHTML += `<tbody><tr><td>${JSON.parse(localStorage.getItem(localStorage.key(i))).name}</td><td>${JSON.parse(localStorage.getItem(localStorage.key(i))).email}</td><td>${JSON.parse(localStorage.getItem(localStorage.key(i))).age}</td><td><button style="width: 230px; height: 28px" id="${JSON.parse(localStorage.getItem(localStorage.key(i))).name}">Editar a ${JSON.parse(localStorage.getItem(localStorage.key(i))).name}</td></tr></tbody>`;
     }
 }
 
 /**
- * Elimina al usuario actual del sessionStorage y redirige al usuario a la página de inicio de sesión
+ * Elimina al usuario actual del localStorage y redirige al usuario a la página de inicio de sesión
  * @returns {void}
  */
 function logOut (): void {
-    while (sessionStorage.length > 0) {
-        sessionStorage.removeItem(sessionStorage.key(0));
+    while (localStorage.length > 0) {
+        localStorage.removeItem(localStorage.key(0));
     }
     window.open("../../public/formularioAcceso/formularioAcceso.html", "_self")
 }
+
+
 
 
 
