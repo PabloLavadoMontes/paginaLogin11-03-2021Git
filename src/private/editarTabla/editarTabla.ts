@@ -16,19 +16,23 @@ class Userr {
 blockPage(checksLocalStorage())
 
 // DOM
-document.getElementsByTagName("h1")[0].innerText += getName(); 
+document.getElementsByTagName("h1")[0].innerText += " " + getName(); 
 document.getElementById("button").addEventListener("click", principaaal);
+// document.getElementById("buttonn").addEventListener("click", updateUser);
+
 
 /**
- * Ejecuta las comprobaciones para editar un usuario
+ * Ejecuta las comprobaciones para editar al usuario
  */
-function principaaal(): void {
+ function principaaal (): void { 
     if (validateInputs()) {
         validatePassword();
     }
     if (validateInputs() && validatePassword()) {
+        localStorage.removeItem(JSON.stringify(getName()));
+        console.log(JSON.stringify(getName()))
         updateUser();
-        swal("", "Usuario modificado correctamente 😊", "success");
+        swal("", "Usuario registrado correctamente 😜", "success");
     }
 }
 
@@ -37,7 +41,7 @@ function principaaal(): void {
  * @returns {string}
  */
 function getName(): string {
-    return " " + sessionStorage.getItem(sessionStorage.key(sessionStorage.length - 1)).toUpperCase();
+    return sessionStorage.getItem(sessionStorage.key(sessionStorage.length - 1));
 }
 
 /**
@@ -50,7 +54,7 @@ function getName(): string {
     let password2 = (document.getElementById("password2")as HTMLInputElement);
     let email = (document.getElementById("email")as HTMLInputElement);
     let age = (document.getElementById("age")as HTMLInputElement);
-    
+
     arrayOfInputs.push(password, password2, email, age);
     for (let i: number = 0; i< arrayOfInputs.length; i++) {
         while (arrayOfInputs[i].value.trim() === "") {
@@ -78,17 +82,21 @@ function getName(): string {
 }
 
 function updateUser() {
-    // let data: Userr[] = [];
-    // data.push(new Userr((document.getElementById("password") as HTMLInputElement).value, (document.getElementById("email") as HTMLInputElement).value, (document.getElementById("age") as HTMLInputElement).valueAsNumber));
+    let password = (document.getElementById("password")as HTMLInputElement).value;
+    let email = (document.getElementById("email")as HTMLInputElement).value;
+    let age = (document.getElementById("age")as HTMLInputElement).value;
     let data = {
-        password: "raqueta",
-        email: "elepetel@gmail.com",
-        age: 45
+        password: password,
+        email: email,
+        age: age
     }
     axios.put(`http://localhost:2800/usuarios/60bdfbd84e79d427e0684036`, data)
     .then(function (response) {
         // handle success
+        let user: string = getName();
+        localStorage.setItem(getName(), JSON.stringify({user, password, email, age}))
         console.log(response.data);
+        console.log(localStorage.getItem(getName()));
     })
     .catch(function (error) {
         // handle error
