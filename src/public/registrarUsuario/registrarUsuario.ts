@@ -1,3 +1,5 @@
+export {userExists, validateInputs, validatePassword}
+
 class Userr {
     name: string;
     password: string;
