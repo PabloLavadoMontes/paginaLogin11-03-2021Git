@@ -1,38 +1,43 @@
 import {checksLocalStorage, blockPage} from "../sesionIniciada/sesionIniciada.js";
-// import {getName} from "../../../lib/private/usuariosRegistrados/usuariosRegistrados.js";
-
-class Userr {
-    password: string;
-    email: string;
-    age: number;
-    constructor (password: string, email: string, age: number) {
-        this.password = password;
-        this.email = email;
-        this.age = age;
-    }
-}
 
 // Antes de cargar el DOM:
 blockPage(checksLocalStorage())
 
 // DOM
 document.getElementsByTagName("h1")[0].innerText += " " + getName(); 
+showUserdata();
 document.getElementById("button").addEventListener("click", principaaal);
 // document.getElementById("buttonn").addEventListener("click", updateUser);
 
+/**
+ * Mostrar en los inputs los datos del usuario a editar;
+ * @returns {void}
+ */
+function showUserdata (): void {
+    let user: any = JSON.parse(localStorage.getItem(getName()));
+    (document.getElementById("username") as HTMLInputElement).value = user.name;
+    (document.getElementById("password") as HTMLInputElement).value = user.password;
+    (document.getElementById("password2") as HTMLInputElement).value = user.password;
+    (document.getElementById("email") as HTMLInputElement).value = user.email;
+    (document.getElementById("age") as HTMLInputElement).value = user.age;
+}
 
 /**
  * Ejecuta las comprobaciones para editar al usuario
+ * @returns {void}
  */
- function principaaal (): void { 
+function principaaal (): void { 
     if (validateInputs()) {
         validatePassword();
     }
     if (validateInputs() && validatePassword()) {
-        localStorage.removeItem(JSON.stringify(getName()));
-        console.log(JSON.stringify(getName()))
+        // localStorage.removeItem(JSON.stringify(getName()));
         updateUser();
         swal("", "Usuario registrado correctamente 😜", "success");
+        getUsers();
+        /* setTimeout(() => {
+            window.open("../usuariosRegistrados/usuariosRegistrados.html", "_self");
+        }, 2000); */
     }
 }
 
@@ -48,7 +53,7 @@ function getName(): string {
  * Comprueba que los valores introducidos por el usuario en el usuario  NO estén vacíos;
  * @returns {boolean}
  */
- function validateInputs(): boolean {
+function validateInputs(): boolean {
     let arrayOfInputs: any[] = [];
     let password = (document.getElementById("password")as HTMLInputElement);
     let password2 = (document.getElementById("password2")as HTMLInputElement);
@@ -69,40 +74,66 @@ function getName(): string {
  * Comprueba que el usuario repita correctamente la contraseña;
  * @returns {boolean}
  */
- function validatePassword (): boolean {
+function validatePassword (): boolean {
     let password1: string = (document.getElementById("password") as HTMLInputElement).value;
     let password2: string = (document.getElementById("password2") as HTMLInputElement).value;
     if (password1 !== password2) {
-        // Pintar el error en el DOM:   error.innerHTML = "¡Las contraseñas no coinciden!";
         swal("", "Las contraseñas NO coinciden", "error");
-        return false
+        return false;
     } else {
-        return true
+        return true;
     }
 }
 
-function updateUser() {
+/**
+ * Realiza un put al clicar el botóN "GUARDAR";
+ * @returns {void}
+ */
+function updateUser(): void {
+    let user = JSON.parse(localStorage.getItem(getName()));
+    let id: string = user._id;
+    let name = (document.getElementById("username")as HTMLInputElement).value;
     let password = (document.getElementById("password")as HTMLInputElement).value;
     let email = (document.getElementById("email")as HTMLInputElement).value;
     let age = (document.getElementById("age")as HTMLInputElement).value;
-    let data = {
+    const url: string = "http://localhost:2800/usuarios/" + id;
+    let data: object = {
+        name: name,
+        id: id,
         password: password,
-        email: email,
+        email: email, 
         age: age
     }
-    axios.put(`http://localhost:2800/usuarios/60bdfbd84e79d427e0684036`, data)
+    console.log(user);
+    console.log(name);
+    console.log(id);
+    axios.put(url, data)
     .then(function (response) {
         // handle success
-        let user: string = getName();
-        localStorage.setItem(getName(), JSON.stringify({user, password, email, age}))
         console.log(response.data);
-        console.log(localStorage.getItem(getName()));
     })
     .catch(function (error) {
         // handle error
         console.log(error);
     })
     .then(function () {
+        // always executed
+    });
+}
+
+function getUsers (): void {
+    axios.get('http://localhost:2800/usuarios')
+    .then((respuesta)=> {
+        for (let i: number = 0; i < respuesta.data.length; i++) {
+            localStorage.setItem(respuesta.data[i].name, JSON.stringify(respuesta.data[i]))
+        }
+        console.log(respuesta.data);
+    })
+    .catch((error)=> {
+        // handle error
+        console.log("Haciendo un GET existe el siguiente error: " + error);
+    })
+    .then(()=> {
         // always executed
     });
 }

@@ -37,7 +37,7 @@ function getName (): string {
 function showUsersInTable (): void {
     let tablaRef: HTMLElement = (document.getElementById("tablaUsuarios") as HTMLElement); 
     for(let i: number = 0 ; i < localStorage.length; i++){
-        tablaRef.innerHTML += `<tbody><tr><td>${JSON.parse(localStorage.getItem(localStorage.key(i))).name}</td><td>${JSON.parse(localStorage.getItem(localStorage.key(i))).email}</td><td>${JSON.parse(localStorage.getItem(localStorage.key(i))).age}</td><td><button style="width: 230px; height: 28px" id="${JSON.parse(localStorage.getItem(localStorage.key(i))).name}">Editar a ${JSON.parse(localStorage.getItem(localStorage.key(i))).name}</td></tr></tbody>`;
+        tablaRef.innerHTML += `<tbody><tr><td>${JSON.parse(localStorage.getItem(localStorage.key(i))).name}</td><td>${JSON.parse(localStorage.getItem(localStorage.key(i))).email}</td><td>${JSON.parse(localStorage.getItem(localStorage.key(i))).age}</td><td><button style="width: 110px; height: 28px; background-color: rgb(128, 209, 128); border: 1.2 px solid black" id="${JSON.parse(localStorage.getItem(localStorage.key(i))).name}">Editar</td></tr></tbody>`;
     }
 }
 
@@ -51,11 +51,6 @@ function logOut (): void {
     }
     window.open("../../public/formularioAcceso/formularioAcceso.html", "_self")
 }
-
-
-
-
-
 
 /**
  * Devuelve un array con todas las claves que hay en el localStorage;
