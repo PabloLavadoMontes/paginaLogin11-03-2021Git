@@ -1,7 +1,7 @@
-import {checksLocalStorage, blockPage} from "../sesionIniciada/sesionIniciada.js";
+import {checksSessionStorage, blockPage} from "../sesionIniciada/sesionIniciada.js";
 
 // Antes de cargar el DOM:
-blockPage(checksLocalStorage())
+blockPage(checksSessionStorage())
 
 // DOM
 window.addEventListener("load", principaal);
@@ -11,7 +11,8 @@ window.addEventListener("load", principaal);
  * @returns {void}
  */
 function principaal (): void {
-    showUsersInTable();
+    getUsers()
+    showUsersInTable(); 
     for (let i: number = 0; i < document.getElementsByTagName("button").length - 1; i++) {
         document.getElementsByTagName("button")[i].addEventListener("click", deleteUser);
     }
@@ -24,8 +25,9 @@ function principaal (): void {
  */
 function showUsersInTable (): void {
     let tablaRef: HTMLElement = (document.getElementById("tablaUsuarios") as HTMLElement); 
-    for(let i: number = 0 ; i < localStorage.length; i++){
-        tablaRef.innerHTML += `<tbody><tr><td>${JSON.parse(localStorage.getItem(localStorage.key(i))).name}</td><td>${JSON.parse(localStorage.getItem(localStorage.key(i))).email}</td><td>${JSON.parse(localStorage.getItem(localStorage.key(i))).age}</td><td><button style="width: 110px; height: 28px; background-color: rgb(235, 146, 146); border: 1.2px solid black" id="${JSON.parse(localStorage.getItem(localStorage.key(i))).name}">Eliminar</td></tr></tbody>`;    }
+    for(let i: number = 0 ; i < localStorage.length; i++) {
+        tablaRef.innerHTML += `<tbody><tr><td>${JSON.parse(localStorage.getItem(localStorage.key(i))).name}</td><td>${JSON.parse(localStorage.getItem(localStorage.key(i))).email}</td><td>${JSON.parse(localStorage.getItem(localStorage.key(i))).age}</td><td><button style="width: 110px; height: 28px; background-color: rgb(235, 146, 146); border: 1.2px solid black" id="${JSON.parse(localStorage.getItem(localStorage.key(i))).name}">Eliminar</td></tr></tbody>`;    
+    }
 }
 
 /**
@@ -46,7 +48,6 @@ function logOut (): void {
  function deleteUser (): void {
     let id: string = JSON.parse(localStorage.getItem(this.id))._id;
     const url: string = "http://localhost:2800/usuarios/" + id;
-    console.log(id);
     swal({
         title: "¿Deseas ELIMINAR al usuario " + this.id + " ?",
         text: "Una vez hagas click en confirmar, el usuario se BORRARÁ PARA SIEMPRE",
@@ -56,17 +57,17 @@ function logOut (): void {
     })
     .then((willDelete) => {
         if (willDelete) {
+            localStorage.removeItem(this.id);
             axios.delete(url)
-            .then(function (response) {
+            .then(function () {
                 // handle success
-                console.log(response.data);
             })
             .catch(function (error) {
                 // handle error
                 console.log(error);
             })
             .then(function () {
-                // always executed
+                // Always executed
             });
             swal("Has ELIMINADO al usuario", {
             icon: "success",
@@ -75,5 +76,26 @@ function logOut (): void {
         } else {
             swal("NO has eliminado al usuario");
         }
+    });
+}
+
+/**
+ * Obtener los usuarios del servidor mediante el cliente Axios;
+ * @returns {void}
+ */
+function getUsers (): void {
+    axios.get('http://localhost:2800/usuarios')
+    .then((respuesta)=> {
+        for (let i: number = 0; i < respuesta.data.length; i++) {
+            localStorage.setItem(respuesta.data[i].name, JSON.stringify(respuesta.data[i]))
+        }
+        console.log(respuesta.data);
+    })
+    .catch((error)=> {
+        // handle error
+        console.log("Haciendo un GET existe el siguiente error: " + error);
+    })
+    .then(()=> {
+        // always executed
     });
 }

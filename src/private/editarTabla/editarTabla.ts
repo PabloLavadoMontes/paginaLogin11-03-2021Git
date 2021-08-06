@@ -1,4 +1,4 @@
-import {checksLocalStorage, blockPage} from "../sesionIniciada/sesionIniciada.js";
+import {checksSessionStorage, blockPage} from "../sesionIniciada/sesionIniciada.js";
 // import {getName} from "../../../lib/private/usuariosRegistrados/usuariosRegistrados.js";
 
 class Userr {
@@ -13,7 +13,7 @@ class Userr {
 }
 
 // Antes de cargar el DOM:
-blockPage(checksLocalStorage())
+blockPage(checksSessionStorage())
 
 // DOM
 document.getElementsByTagName("h1")[0].innerText += " " + getName(); 
