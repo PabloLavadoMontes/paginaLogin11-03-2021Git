@@ -51,8 +51,8 @@ table.tablaUsuarios td {
 }
 
 body {
-    background-color: brown;
-    /* background-color: rgb(222, 226, 187); */
+    /* background-color: brown; */
+    background-color: rgb(222, 226, 187);
 }
 
 #enlaceRegistrados {

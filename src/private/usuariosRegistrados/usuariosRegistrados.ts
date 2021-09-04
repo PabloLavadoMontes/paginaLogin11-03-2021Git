@@ -1,8 +1,7 @@
-import {checksLocalStorage, blockPage} from "../sesionIniciada/sesionIniciada.js";
-export {getName}
+import {checksSessionStorage, blockPage} from "../sesionIniciada/sesionIniciada.js";
 
 // Antes de cargar el DOM:
-blockPage(checksLocalStorage())
+blockPage(checksSessionStorage())
 
 // DOM
 window.addEventListener("load", principaal);
@@ -12,9 +11,10 @@ window.addEventListener("load", principaal);
  * @returns {void}
  */
 function principaal (): void {
-    showUsersInTable();
+    getUsers()
+    showUsersInTable(); 
     for (let i: number = 0; i < document.getElementsByTagName("button").length - 1; i++) {
-        document.getElementsByTagName("button")[i].addEventListener("click", getName)
+        document.getElementsByTagName("button")[i].addEventListener("click", deleteUser);
     }
     document.getElementById("cerrarSesion").addEventListener("click", logOut);
 }
@@ -42,6 +42,8 @@ function showUsersInTable (): void {
     let tablaRef: HTMLElement = (document.getElementById("tablaUsuarios") as HTMLElement); 
     for(let i: number = 0 ; i < localStorage.length; i++){
         tablaRef.innerHTML += `<tbody><tr><td>${JSON.parse(localStorage.getItem(localStorage.key(i))).name}</td><td>${JSON.parse(localStorage.getItem(localStorage.key(i))).email}</td><td>${JSON.parse(localStorage.getItem(localStorage.key(i))).age}</td><td><button style="width: 110px; height: 28px; background-color: rgb(128, 209, 128); border: 1.2 px solid black" id="${JSON.parse(localStorage.getItem(localStorage.key(i))).name}">Editar</td></tr></tbody>`;
+    for(let i: number = 0 ; i < localStorage.length; i++) {
+        tablaRef.innerHTML += `<tbody><tr><td>${JSON.parse(localStorage.getItem(localStorage.key(i))).name}</td><td>${JSON.parse(localStorage.getItem(localStorage.key(i))).email}</td><td>${JSON.parse(localStorage.getItem(localStorage.key(i))).age}</td><td><button style="width: 110px; height: 28px; background-color: rgb(235, 146, 146); border: 1.2px solid black" id="${JSON.parse(localStorage.getItem(localStorage.key(i))).name}">Eliminar</td></tr></tbody>`;    
     }
 }
 
@@ -57,36 +59,60 @@ function logOut (): void {
 }
 
 /**
- * Devuelve un array con todas las claves que hay en el localStorage;
- * @returns {string[]}
- */
-/*  function getLSKeys (): string[] {
-    let keysLS: string[] = [];
-    for (let i: number = 0; i < localStorage.length; i++) {
-        keysLS.push(localStorage.key(i));
-    }
-    return keysLS;
-} */
-
-/**
- * Muestra en una tabla de html los usuarios que hay en el localStorage;
+ * Elimina a un usuario de la lista;
  * @returns {void}
  */
-/* function showLSUsers (): void {
-    for (let i: number = 0; i < localStorage.length; i++) {
-        console.log(localStorage.getItem(getLSKeys()[i]));
-    }
-} */
+ function deleteUser (): void {
+    let id: string = JSON.parse(localStorage.getItem(this.id))._id;
+    const url: string = "http://localhost:2800/usuarios/" + id;
+    swal({
+        title: "¿Deseas ELIMINAR al usuario " + this.id + " ?",
+        text: "Una vez hagas click en confirmar, el usuario se BORRARÁ PARA SIEMPRE",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+    })
+    .then((willDelete) => {
+        if (willDelete) {
+            localStorage.removeItem(this.id);
+            axios.delete(url)
+            .then(function () {
+                // handle success
+            })
+            .catch(function (error) {
+                // handle error
+                console.log(error);
+            })
+            .then(function () {
+                // Always executed
+            });
+            swal("Has ELIMINADO al usuario", {
+            icon: "success",
+            })
+            location.reload();
+        } else {
+            swal("NO has eliminado al usuario");
+        }
+    });
+}
 
-
-
-/* // mostrandoObjetos(usersss);
-function mostrandoObjetos (usersss: Userrr[]): void {
-    let divisorRef: HTMLElement = (document.getElementById("mostrarObjetos") as HTMLElement); 
-    for (let i: number = 0; i < usersss.length; i++) {
-        JSON.stringify(localStorage.setItem(usersss[i].username, JSON.stringify(usersss[i])));
-        let usersssLS: any = localStorage.getItem(usersss[i].username);
-        divisorRef.innerHTML +=("<br>" + "Los datos del username " + "<b>" + usersss[i].username + "</b>" + " son:" + JSON.parse(JSON.stringify(usersssLS))  + "<br>");
-        // divisorRef.innerHTML += ("<br>" + usersss[i].username + ": " + JSON.stringify(usersss[i]) + "<br>");
-    }
-} */
+/**
+ * Obtener los usuarios del servidor mediante el cliente Axios;
+ * @returns {void}
+ */
+function getUsers (): void {
+    axios.get('http://localhost:2800/usuarios')
+    .then((respuesta)=> {
+        for (let i: number = 0; i < respuesta.data.length; i++) {
+            localStorage.setItem(respuesta.data[i].name, JSON.stringify(respuesta.data[i]))
+        }
+        console.log(respuesta.data);
+    })
+    .catch((error)=> {
+        // handle error
+        console.log("Haciendo un GET existe el siguiente error: " + error);
+    })
+    .then(()=> {
+        // always executed
+    });
+}

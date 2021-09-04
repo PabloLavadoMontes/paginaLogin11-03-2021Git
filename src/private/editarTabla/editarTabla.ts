@@ -1,7 +1,8 @@
-import {checksLocalStorage, blockPage} from "../sesionIniciada/sesionIniciada.js";
+import {checksSessionStorage, blockPage} from "../sesionIniciada/sesionIniciada.js";
+// import {getName} from "../../../lib/private/usuariosRegistrados/usuariosRegistrados.js";
 
 // Antes de cargar el DOM:
-blockPage(checksLocalStorage())
+blockPage(checksSessionStorage())
 
 // DOM
 let name: string = getParameterByName("name");
