@@ -1,4 +1,5 @@
 import {checksSessionStorage, blockPage} from "../sesionIniciada/sesionIniciada.js";
+export {getName}
 
 // Antes de cargar el DOM:
 blockPage(checksSessionStorage())
@@ -13,8 +14,13 @@ window.addEventListener("load", principaal);
 function principaal (): void {
     getUsers()
     showUsersInTable(); 
-    for (let i: number = 0; i < document.getElementsByTagName("button").length - 1; i++) {
-        document.getElementsByTagName("button")[i].addEventListener("click", deleteUser);
+    for (let i: number = 0; i < document.getElementsByTagName("button").length - 1; i++) {   
+        if (document.getElementsByTagName("button")[i].style.backgroundColor === "rgb(235, 146, 146)") {
+            // alert("Este es un botón de eliminación")
+            document.getElementsByTagName("button")[i].addEventListener("click", deleteUser);
+        } else {
+            document.getElementsByTagName("button")[i].addEventListener("click", getName);    
+        }
     }
     document.getElementById("cerrarSesion").addEventListener("click", logOut);
 }
@@ -41,21 +47,26 @@ function getName (): string {
 function showUsersInTable (): void {
     let tablaRef: HTMLElement = (document.getElementById("tablaUsuarios") as HTMLElement); 
     for(let i: number = 0 ; i < localStorage.length; i++){
-        tablaRef.innerHTML += `<tbody><tr><td>${JSON.parse(localStorage.getItem(localStorage.key(i))).name}</td><td>${JSON.parse(localStorage.getItem(localStorage.key(i))).email}</td><td>${JSON.parse(localStorage.getItem(localStorage.key(i))).age}</td><td><button style="width: 110px; height: 28px; background-color: rgb(128, 209, 128); border: 1.2 px solid black" id="${JSON.parse(localStorage.getItem(localStorage.key(i))).name}">Editar</td></tr></tbody>`;
-    for(let i: number = 0 ; i < localStorage.length; i++) {
-        tablaRef.innerHTML += `<tbody><tr><td>${JSON.parse(localStorage.getItem(localStorage.key(i))).name}</td><td>${JSON.parse(localStorage.getItem(localStorage.key(i))).email}</td><td>${JSON.parse(localStorage.getItem(localStorage.key(i))).age}</td><td><button style="width: 110px; height: 28px; background-color: rgb(235, 146, 146); border: 1.2px solid black" id="${JSON.parse(localStorage.getItem(localStorage.key(i))).name}">Eliminar</td></tr></tbody>`;    
-    }
+        tablaRef.innerHTML += `<tbody>
+        <tr>
+        <td>${JSON.parse(localStorage.getItem(localStorage.key(i))).name}</td>
+        <td>${JSON.parse(localStorage.getItem(localStorage.key(i))).email}</td>
+        <td>${JSON.parse(localStorage.getItem(localStorage.key(i))).age}</td>
+        <td>
+        <button style="width: 110px;
+        height: 28px; 
+        background-color: rgb(128, 209, 128); 
+        border: 1.2 px solid black" 
+        id="${JSON.parse(localStorage.getItem(localStorage.key(i))).name}">Editar</td>
+        <td>
+        <button style="width: 110px;
+        height: 28px; 
+        background-color: rgb(235, 146, 146); 
+        border: 1.2px solid black" 
+        id="${JSON.parse(localStorage.getItem(localStorage.key(i))).name}">Eliminar</td>
+        </tr>
+        </tbody>`;
 }
-
-/**
- * Elimina al usuario actual del localStorage y redirige al usuario a la página de inicio de sesión
- * @returns {void}
- */
-function logOut (): void {
-    while (localStorage.length > 0) {
-        localStorage.removeItem(localStorage.key(0));
-    }
-    window.open("../../public/formularioAcceso/formularioAcceso.html", "_self")
 }
 
 /**
@@ -94,6 +105,18 @@ function logOut (): void {
             swal("NO has eliminado al usuario");
         }
     });
+}
+
+
+/**
+ * Elimina al usuario actual del localStorage y redirige al usuario a la página de inicio de sesión
+ * @returns {void}
+ */
+function logOut (): void {
+    while (localStorage.length > 0) {
+        localStorage.removeItem(localStorage.key(0));
+    }
+    window.open("../../public/formularioAcceso/formularioAcceso.html", "_self")
 }
 
 /**
