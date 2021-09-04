@@ -61,7 +61,7 @@ function checkUser (): void {
         if (nombreCapturado === JSON.parse(localStorage.getItem(localStorage.key(i))).name && contraseñaCapturada === JSON.parse(localStorage.getItem(localStorage.key(i))).password) {
             sessionStorage.setItem(nombreCapturado, nombreCapturado);
             swal("", `Enhorabuena ${nombreCapturado}, has conseguido iniciar sesión`, "success");
-            setTimeout(() => { window.open("../../private/sesionIniciada/sesionIniciada.html", "_self") }, 1200);
+            setTimeout(() => { window.open("../../private/sesionIniciada/sesionIniciada.html", "_self") }, 1000);
             break;
         } else {
             swal("", "Su nombre de usuario o contraseña son incorrectos :(", "error");
