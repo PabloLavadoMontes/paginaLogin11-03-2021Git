@@ -24,9 +24,13 @@ function principaal (): void {
  * @returns {string}
  */
 function getName (): string {
-    sessionStorage.clear();
-    sessionStorage.setItem(this.id, this.id)
-    window.open("http://127.0.0.1:5500/src/private/editarTabla/editarTabla.html", "_self")
+    let id: any = JSON.parse(localStorage.getItem(this.id)).name;
+    console.log(id);
+    // sessionStorage.clear();
+    // sessionStorage.setItem(this.id, this.id)
+    setTimeout(() => {
+        window.open("http://127.0.0.1:5501/src/private/editarTabla/editarTabla.html" + "?name=" + id, "_self")
+    }, 50); 
     return this.id;
 }
 

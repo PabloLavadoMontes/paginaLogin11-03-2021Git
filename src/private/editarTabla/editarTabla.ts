@@ -4,8 +4,9 @@ import {checksLocalStorage, blockPage} from "../sesionIniciada/sesionIniciada.js
 blockPage(checksLocalStorage())
 
 // DOM
-document.getElementsByTagName("h1")[0].innerText += " " + getName(); 
-showUserdata();
+let name: string = getParameterByName("name");
+document.getElementsByTagName("h1")[0].innerText += " " + name; 
+showUserdata(name);
 document.getElementById("button").addEventListener("click", principaaal);
 // document.getElementById("buttonn").addEventListener("click", updateUser);
 
@@ -13,8 +14,8 @@ document.getElementById("button").addEventListener("click", principaaal);
  * Mostrar en los inputs los datos del usuario a editar;
  * @returns {void}
  */
-function showUserdata (): void {
-    let user: any = JSON.parse(localStorage.getItem(getName()));
+function showUserdata (username: string): void {
+    let user: any = JSON.parse(localStorage.getItem(username));
     (document.getElementById("username") as HTMLInputElement).value = user.name;
     (document.getElementById("password") as HTMLInputElement).value = user.password;
     (document.getElementById("password2") as HTMLInputElement).value = user.password;
@@ -32,21 +33,13 @@ function principaaal (): void {
     }
     if (validateInputs() && validatePassword()) {
         // localStorage.removeItem(JSON.stringify(getName()));
-        updateUser();
+        updateUser(name);
         swal("", "Usuario registrado correctamente 😜", "success");
         getUsers();
         /* setTimeout(() => {
             window.open("../usuariosRegistrados/usuariosRegistrados.html", "_self");
         }, 2000); */
     }
-}
-
-/**
- * Obtiene el nombre del usuario a editar a través del SS
- * @returns {string}
- */
-function getName(): string {
-    return sessionStorage.getItem(sessionStorage.key(sessionStorage.length - 1));
 }
 
 /**
@@ -71,6 +64,17 @@ function validateInputs(): boolean {
 }
 
 /**
+ * @param String name
+ * @return String
+ */
+function getParameterByName(name: string): string {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    let regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+    results = regex.exec(location.search);
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+
+/**
  * Comprueba que el usuario repita correctamente la contraseña;
  * @returns {boolean}
  */
@@ -89,8 +93,8 @@ function validatePassword (): boolean {
  * Realiza un put al clicar el botóN "GUARDAR";
  * @returns {void}
  */
-function updateUser(): void {
-    let user = JSON.parse(localStorage.getItem(getName()));
+function updateUser(username: string): void {
+    let user = JSON.parse(localStorage.getItem(username));
     let id: string = user._id;
     let name = (document.getElementById("username")as HTMLInputElement).value;
     let password = (document.getElementById("password")as HTMLInputElement).value;
