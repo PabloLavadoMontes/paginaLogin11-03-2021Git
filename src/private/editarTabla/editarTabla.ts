@@ -35,7 +35,8 @@ function principaaal (): void {
         // localStorage.removeItem(JSON.stringify(getName()));
         updateUser(name);
         swal("", "Usuario registrado correctamente 😜", "success");
-        getUsers();
+        setTimeout(() => { window.open("../usuariosRegistrados/usuariosRegistrados.html", "_self") }, 1000);
+        // getUsers();
         /* setTimeout(() => {
             window.open("../usuariosRegistrados/usuariosRegistrados.html", "_self");
         }, 2000); */
@@ -64,8 +65,8 @@ function validateInputs(): boolean {
 }
 
 /**
- * @param String name
- * @return String
+ * @param {string} name
+ * @return {string}
  */
 function getParameterByName(name: string): string {
     name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
@@ -115,6 +116,8 @@ function updateUser(username: string): void {
     .then(function (response) {
         // handle success
         console.log(response.data);
+        localStorage.clear();
+        getUsers();
     })
     .catch(function (error) {
         // handle error
@@ -125,6 +128,10 @@ function updateUser(username: string): void {
     });
 }
 
+/**
+ * Obtener los usuarios del servidor mediante el cliente Axios;
+ * @returns {void}
+ */
 function getUsers (): void {
     axios.get('http://localhost:2800/usuarios')
     .then((respuesta)=> {
